@@ -1,0 +1,23 @@
+services:
+  apache:
+    container_name: apache
+    build: .
+    volumes:
+      - ../:/var/www/html
+      -  ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini 
+    ports:
+      - 8080:80
+    environment: 
+      XDEBUG_MODE:  debug 
+      XDEBUG_CONFIG:  "client_host=host.docker.internal client_port=9003 start_with_request=yes" 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  postgres:
+    image: postgres:latest
+    container_name: local_db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
